@@ -5,16 +5,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function NavbarItem(props) {
-  const { title, name, path } = props;
+  const { title, name, path, onClick, clicked } = props;
   const pathname = usePathname();
 
   return (
     <Link
       href={path || ""}
       className="p-3 flex space-x-4 items-center text-lg hover:bg-gray-50 hover:rounded-full group"
+      onClick={onClick}
     >
       <Image
-        src={`/navbar/${name}${pathname == path ? "-solid" : ""}.svg`}
+        src={`/navbar/${name}${
+          pathname == path || clicked ? "-solid" : ""
+        }.svg`}
         height={24}
         width={24}
         alt={name}
