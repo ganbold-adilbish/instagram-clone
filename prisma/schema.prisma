@@ -12,3 +12,63 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Post {
+  id          String  @id @default(cuid())
+  description String
+  likeNumber  String
+  url         String
+  published   Boolean @default(false)
+  author      User?   @relation(fields: [authorId], references: [id])
+  authorId    String?
+  feed        Feed?   @relation(fields: [feedId], references: [id])
+  feedId      String?
+}
+
+model User {
+  id                        String    @id @default(cuid())
+  url                       String?
+  username                  String    @unique
+  fullName                  String
+  password                  String?
+  email                     String?   @unique
+  createdAt                 DateTime  @default(now()) @map("created_at")
+  updatedAt                 DateTime  @updatedAt @map("updated_at")
+  posts                     Post[]
+  numberOfPosts             String?
+  numberOfFollowers         String?
+  numberOfFollowingAccounts String?
+  description               String?
+  stories                   Story[]
+  feed                      Feed?
+  messages                  Message[]
+  lastActive                String
+
+  @@map("users")
+}
+
+model Story {
+  id         String  @id @default(cuid())
+  name       String
+  likeNumber String
+  url        String
+  published  Boolean @default(false)
+  author     User?   @relation(fields: [authorId], references: [id])
+  authorId   String?
+  feed       Feed?   @relation(fields: [feedId], references: [id])
+  feedId     String?
+}
+
+model Feed {
+  id      String  @id @default(cuid())
+  posts   Post[]
+  stories Story[]
+  user    User    @relation(fields: [userId], references: [id])
+  userId  String  @unique
+}
+
+model Message {
+  id      String @id @default(cuid())
+  content String
+  users   User[]
+}
