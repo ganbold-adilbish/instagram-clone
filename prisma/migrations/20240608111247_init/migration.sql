@@ -5,6 +5,8 @@ CREATE TABLE "Post" (
     "likeNumber" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "published" BOOLEAN NOT NULL DEFAULT false,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "authorId" TEXT,
     "feedId" TEXT,
 
@@ -37,6 +39,8 @@ CREATE TABLE "Story" (
     "likeNumber" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "published" BOOLEAN NOT NULL DEFAULT false,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "authorId" TEXT,
     "feedId" TEXT,
 
