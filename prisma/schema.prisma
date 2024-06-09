@@ -7,6 +7,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id             String    @id @default(cuid())
+  username       String    @unique
+  fullName       String
+  url            String?
+  password       String?
+  email          String?   @unique
+  description    String?
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  lastActive     String?
+  feed           Feed?
+  followers      User[]    @relation("UserFollows")
+  followingUsers User[]    @relation("UserFollows")
+  posts          Post[]
+  stories        Story[]
+  messages       Message[]
+
+  @@map("users")
+}
+
+model Feed {
+  id      String  @id @default(cuid())
+  user    User    @relation(fields: [userId], references: [id])
+  userId  String  @unique
+  posts   Post[]
+  stories Story[]
+}
+
 model Post {
   id          String   @id @default(cuid())
   description String
@@ -14,33 +43,11 @@ model Post {
   url         String
   published   Boolean  @default(false)
   createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
   author      User?    @relation(fields: [authorId], references: [id])
   authorId    String?
   feed        Feed?    @relation(fields: [feedId], references: [id])
   feedId      String?
-}
-
-model User {
-  id                        String    @id @default(cuid())
-  url                       String?
-  username                  String    @unique
-  fullName                  String
-  password                  String?
-  email                     String?   @unique
-  createdAt                 DateTime  @default(now()) @map("created_at")
-  updatedAt                 DateTime  @updatedAt @map("updated_at")
-  numberOfPosts             String?
-  numberOfFollowers         String?
-  numberOfFollowingAccounts String?
-  description               String?
-  lastActive                String
-  feed                      Feed?
-  posts                     Post[]
-  stories                   Story[]
-  messages                  Message[]
-
-  @@map("users")
 }
 
 model Story {
@@ -50,19 +57,11 @@ model Story {
   url        String
   published  Boolean  @default(false)
   createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
   author     User?    @relation(fields: [authorId], references: [id])
   authorId   String?
   feed       Feed?    @relation(fields: [feedId], references: [id])
   feedId     String?
-}
-
-model Feed {
-  id      String  @id @default(cuid())
-  userId  String  @unique
-  user    User    @relation(fields: [userId], references: [id])
-  posts   Post[]
-  stories Story[]
 }
 
 model Message {
