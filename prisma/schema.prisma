@@ -24,6 +24,7 @@ model User {
   posts          Post[]
   stories        Story[]
   messages       Message[]
+  likedPosts     Post[]    @relation("UserLikesPost")
 
   @@map("users")
 }
@@ -37,17 +38,18 @@ model Feed {
 }
 
 model Post {
-  id          String   @id @default(cuid())
-  description String
-  likeNumber  String
-  url         String
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  author      User?    @relation(fields: [authorId], references: [id])
-  authorId    String?
-  feed        Feed?    @relation(fields: [feedId], references: [id])
-  feedId      String?
+  id                String   @id @default(cuid())
+  description       String
+  likeNumber        String
+  url               String
+  published         Boolean  @default(false)
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  author            User?    @relation(fields: [authorId], references: [id])
+  authorId          String?
+  feed              Feed?    @relation(fields: [feedId], references: [id])
+  feedId            String?
+  usersWhoHaveLiked User[]   @relation("UserLikesPost")
 }
 
 model Story {
