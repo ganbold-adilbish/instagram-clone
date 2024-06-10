@@ -23,7 +23,8 @@ model User {
   followingUsers User[]    @relation("UserFollows")
   posts          Post[]
   stories        Story[]
-  messages       Message[]
+  chats          Chat[]    @relation("UserJoinsChat")
+  messages       Message[] @relation("UserSendsMessage")
   likedPosts     Post[]    @relation("UserLikesPost")
 
   @@map("users")
@@ -40,7 +41,6 @@ model Feed {
 model Post {
   id                String   @id @default(cuid())
   description       String
-  likeNumber        String
   url               String
   published         Boolean  @default(false)
   createdAt         DateTime @default(now()) @map("created_at")
@@ -53,21 +53,29 @@ model Post {
 }
 
 model Story {
-  id         String   @id @default(cuid())
-  name       String
-  likeNumber String
-  url        String
-  published  Boolean  @default(false)
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  author     User?    @relation(fields: [authorId], references: [id])
-  authorId   String?
-  feed       Feed?    @relation(fields: [feedId], references: [id])
-  feedId     String?
+  id        String   @id @default(cuid())
+  name      String
+  url       String
+  published Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  String?
+  feed      Feed?    @relation(fields: [feedId], references: [id])
+  feedId    String?
+}
+
+model Chat {
+  id       String    @id @default(cuid())
+  members  User[]    @relation("UserJoinsChat")
+  messages Message[]
 }
 
 model Message {
-  id      String @id @default(cuid())
-  content String
-  users   User[]
+  id       String @id @default(cuid())
+  content  String
+  sender   User   @relation("UserSendsMessage", fields: [senderId], references: [id])
+  senderId String
+  chat     Chat   @relation(fields: [chatId], references: [id])
+  chatId   String
 }
