@@ -1,199 +1,5 @@
+import { prisma } from "@/lib/prisma";
 import Image from "next/image";
-
-const posts = [
-  {
-    id: 1,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 2,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 3,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 4,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 5,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 6,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 7,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 8,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 9,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 10,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 11,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 12,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 13,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 14,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 15,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-  {
-    id: 16,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    isLiked: "true",
-    author: {
-      url: "/zenjoshh_profile_picture.jpeg",
-      username: "zenjoshh",
-    },
-  },
-];
 
 const actionButtons = [
   {
@@ -214,16 +20,66 @@ const saveButton = {
   name: "save",
 };
 
+async function getPosts() {
+  const posts = await prisma.post.findMany({
+    where: {
+      published: true,
+    },
+  });
+
+  return posts;
+}
+
+async function getPost(id) {
+  let post = await prisma.post.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      _count: {
+        select: {
+          usersWhoHaveLiked: true,
+        },
+      },
+      url: true,
+      description: true,
+      author: {
+        select: {
+          url: true,
+          username: true,
+        },
+      },
+      usersWhoHaveLiked: {
+        where: {
+          username: "cnbcmakeit",
+        },
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+
+  post = {
+    ...post,
+    likes_total_count: post._count.usersWhoHaveLiked,
+    has_liked: post.usersWhoHaveLiked.length === 1,
+  };
+
+  return post;
+}
+
 export async function generateStaticParams() {
+  const posts = await getPosts();
+
   return posts.map(({ id }) => ({
-    id: id.toString(),
+    id,
   }));
 }
 
-export default function Post({ params }) {
-  const { url, author, description, isLiked, likeNumber } = posts.find(
-    ({ id }) => id === parseInt(params.id)
-  );
+export default async function Post({ params: { id } }) {
+  const { url, author, description, likes_total_count, has_liked } =
+    await getPost(id);
 
   return (
     <div className="px-5 pt-14">
@@ -284,7 +140,7 @@ export default function Post({ params }) {
                   <button key={id} className="p-2">
                     <Image
                       src={`/post/${name}${
-                        isLiked && name === "like" ? "-solid" : ""
+                        has_liked && name === "like" ? "-solid" : ""
                       }.svg`}
                       height={24}
                       width={24}
@@ -302,7 +158,7 @@ export default function Post({ params }) {
                 />
               </button>
             </div>
-            <strong className="text-sm">{likeNumber} likes</strong>
+            <strong className="text-sm">{likes_total_count} likes</strong>
             <div>
               <time className="text-xs" dateTime="2024-05-14T12:32:52.000Z">
                 36 minutes ago

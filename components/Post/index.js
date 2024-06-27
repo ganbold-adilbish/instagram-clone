@@ -19,7 +19,13 @@ const saveButton = {
   name: "save",
 };
 
-export default function Post({ url, description, likeNumber, name, isLiked }) {
+export default function Post({
+  url,
+  description,
+  likes_total_count,
+  name,
+  has_liked,
+}) {
   return (
     <div className="p-4 md:p-0 my-20 w-[468px] text-sm">
       <Image
@@ -37,7 +43,7 @@ export default function Post({ url, description, likeNumber, name, isLiked }) {
             <button key={id}>
               <Image
                 src={`/post/${name}${
-                  isLiked && name === "like" ? "-solid" : ""
+                  has_liked && name === "like" ? "-solid" : ""
                 }.svg`}
                 height={24}
                 width={24}
@@ -55,7 +61,7 @@ export default function Post({ url, description, likeNumber, name, isLiked }) {
           />
         </button>
       </div>
-      <h1 className="font-bold">{likeNumber} likes</h1>
+      <h1 className="font-bold">{likes_total_count} likes</h1>
       <p className="mt-2">
         <span className="font-bold">{name}</span> {description}
       </p>

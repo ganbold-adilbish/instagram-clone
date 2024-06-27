@@ -1,26 +1,34 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const user = {
-  username: "cnbcmakeit",
-};
+async function getUser() {
+  const user = await prisma.user.findUnique({
+    where: {
+      username: "cnbcmakeit",
+    },
+    select: {
+      username: true,
+      chats: {
+        select: {
+          id: true,
+          members: {
+            where: {
+              username: {
+                not: "cnbcmakeit",
+              },
+            },
+          },
+        },
+      },
+    },
+  });
 
-const messages = [
-  {
-    id: 1,
-    senderName: "audi",
-    lastActive: "2w",
-    profilePictureUrl: "/audi.jpeg",
-  },
-  {
-    id: 2,
-    senderName: "porsche",
-    lastActive: "5m",
-    profilePictureUrl: "/porsche.jpeg",
-  },
-];
+  return user;
+}
 
-export default function Inbox() {
+export default async function Inbox() {
+  const user = await getUser();
+
   return (
     <div className="flex border-r border-gray-300 h-screen">
       {/* Sidebar */}
@@ -58,7 +66,7 @@ export default function Inbox() {
         </div>
 
         <div className="w-full">
-          {messages.map(({ id, senderName, lastActive, profilePictureUrl }) => (
+          {user.chats.map(({ id, members }) => (
             <div
               key={id}
               className="px-6 py-2 flex items-center w-[350px] box-content cursor-pointer hover:bg-zinc-50"
@@ -66,7 +74,7 @@ export default function Inbox() {
               <div className="pr-3 flex shrink-0">
                 <div className="h-14 w-14 rounded-full overflow-hidden">
                   <Image
-                    src={profilePictureUrl}
+                    src={members[0].url}
                     height={56}
                     width={56}
                     alt="User avatar"
@@ -75,10 +83,10 @@ export default function Inbox() {
               </div>
               <div className="flex flex-col shrink-0 grow space-y-1">
                 <div className="font-normal text-sm leading-[18px] w-[244px] text-ellipsis overflow-hidden">
-                  {senderName}
+                  {members[0].username}
                 </div>
                 <div className="font-normal text-xs text-[rgb(115_115_115)] text-ellipsis overflow-hidden">
-                  {`Active ${lastActive} ago`}
+                  {`Active ${members[0].lastActive} ago`}
                 </div>
               </div>
             </div>

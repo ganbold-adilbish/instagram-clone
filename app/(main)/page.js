@@ -1,167 +1,81 @@
 import Posts from "@/components/Posts";
 import Sidebar from "@/components/Sidebar";
 import Stories from "@/components/Stories";
+import { prisma } from "@/lib/prisma";
 
-const user = {
-  url: "/cnbc.jpeg",
-  username: "cnbc",
-  fullName: "CNBC",
-};
+async function getUser() {
+  let user = await prisma.user.findUnique({
+    where: {
+      username: "cnbcmakeit",
+    },
+    select: {
+      url: true,
+      username: true,
+      fullName: true,
+      feed: {
+        select: {
+          stories: {
+            where: {
+              published: true,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+            select: {
+              id: true,
+              url: true,
+              name: true,
+            },
+          },
+          posts: {
+            where: {
+              published: true,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+            select: {
+              _count: {
+                select: {
+                  usersWhoHaveLiked: true,
+                },
+              },
+              id: true,
+              url: true,
+              description: true,
+              author: {
+                select: {
+                  username: true,
+                },
+              },
+              usersWhoHaveLiked: {
+                where: {
+                  username: "cnbcmakeit",
+                },
+                select: {
+                  id: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
 
-const stories = [
-  {
-    id: 1,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 2,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 3,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 4,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 5,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 6,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 7,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 8,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 9,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 10,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 11,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 12,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 13,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 14,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-  {
-    id: 15,
-    url: "/porsche.jpeg",
-    name: "porsche",
-  },
-];
+  user.feed.posts = user.feed.posts.map((post) => ({
+    ...post,
+    likes_total_count: post._count.usersWhoHaveLiked,
+    has_liked: post.usersWhoHaveLiked.length === 1,
+  }));
 
-const posts = [
-  {
-    id: 1,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    name: "zenjoshh",
-    isLiked: "true",
-  },
-  {
-    id: 2,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    name: "zenjoshh",
-    isLiked: "true",
-  },
-  {
-    id: 3,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    name: "zenjoshh",
-    isLiked: "true",
-  },
-  {
-    id: 4,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    name: "zenjoshh",
-    isLiked: "true",
-  },
-  {
-    id: 5,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    name: "zenjoshh",
-    isLiked: "true",
-  },
-  {
-    id: 6,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    name: "zenjoshh",
-    isLiked: "true",
-  },
-  {
-    id: 7,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    name: "zenjoshh",
-    isLiked: "true",
-  },
-  {
-    id: 8,
-    url: "/macbook_setup.jpeg",
-    description:
-      "Today's EDC and desk setup essentials: MacBook Pro M1, iPhone 15 pro, Apple watch, Airpods Max, a dark roast espresso and kinfolk wilderness🌿☕🎧",
-    likeNumber: "1,498",
-    name: "zenjoshh",
-    isLiked: "true",
-  },
-];
+  return user;
+}
 
-export default function Home() {
+export default async function Home() {
+  const user = await getUser();
+  const { posts, stories } = user.feed;
+
   return (
     <div className="flex space-x-10 mx-auto w-full max-w-[950px]">
       <div className="flex flex-col items-center w-full max-w-[655px]">

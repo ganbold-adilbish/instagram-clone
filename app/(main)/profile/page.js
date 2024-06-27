@@ -1,135 +1,54 @@
+import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";
 
-const user = {
-  url: "/cnbc.jpeg",
-  username: "cnbcmakeit",
-  fullName: "CNBC Make It",
-  description:
-    "Helping you be smarter and more successful with your money, work & life.",
-  numberOfPosts: "9,545",
-  numberOfFollowers: "825K",
-  numberOfFollowingAccounts: "172",
-};
+async function getUser() {
+  const user = await prisma.user.findUnique({
+    where: {
+      username: "cnbcmakeit",
+    },
+    include: {
+      _count: {
+        select: {
+          posts: true,
+          followers: true,
+          followingUsers: true,
+        },
+      },
+      stories: {
+        where: {
+          published: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          url: true,
+          name: true,
+        },
+      },
+      posts: {
+        where: {
+          published: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          url: true,
+        },
+      },
+    },
+  });
 
-const stories = [
-  {
-    id: 1,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 2,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 3,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 4,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 5,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 6,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 7,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 8,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 9,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 10,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 11,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 12,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 13,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 14,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-  {
-    id: 15,
-    url: "/cnbcmakeit_story.jpeg",
-    name: "Fin Lit",
-  },
-];
+  return user;
+}
 
-const posts = [
-  {
-    id: 1,
-    url: "/cnbcmakeit_post.jpeg",
-  },
-  {
-    id: 2,
-    url: "/cnbcmakeit_post.jpeg",
-  },
-  {
-    id: 3,
-    url: "/cnbcmakeit_post.jpeg",
-  },
-  {
-    id: 4,
-    url: "/cnbcmakeit_post.jpeg",
-  },
-  {
-    id: 5,
-    url: "/cnbcmakeit_post.jpeg",
-  },
-  {
-    id: 6,
-    url: "/cnbcmakeit_post.jpeg",
-  },
-  {
-    id: 7,
-    url: "/cnbcmakeit_post.jpeg",
-  },
-  {
-    id: 8,
-    url: "/cnbcmakeit_post.jpeg",
-  },
-  {
-    id: 9,
-    url: "/cnbcmakeit_post.jpeg",
-  },
-];
+export default async function Profile() {
+  const user = await getUser();
 
-export default function Profile() {
   return (
     <div className="px-5 pt-8 w-full max-w-[935px] mx-auto box-content">
       <header className="flex items-stretch mb-11">
@@ -163,13 +82,13 @@ export default function Profile() {
           </div>
           <div className="flex space-x-4 items-center mb-4">
             <div>
-              <strong>{user.numberOfPosts}</strong> posts
+              <strong>{user._count.posts}</strong> posts
             </div>
             <div>
-              <strong>{user.numberOfFollowers}</strong> followers
+              <strong>{user._count.followers}</strong> followers
             </div>
             <div>
-              <strong>{user.numberOfFollowingAccounts}</strong> following
+              <strong>{user._count.followingUsers}</strong> following
             </div>
           </div>
           <strong>{user.fullName}</strong>
@@ -179,7 +98,7 @@ export default function Profile() {
 
       <div>
         <ul className="flex space-x-4 overflow-y-auto">
-          {stories.map(({ id, name, url }) => (
+          {user.stories?.map(({ id, name, url }) => (
             <li
               key={id}
               className="px-4 py-[10px] flex flex-col items-center space-y-4"
@@ -197,7 +116,7 @@ export default function Profile() {
 
       <div>
         <div className="grid grid-cols-3 gap-1">
-          {posts.map(({ id, url }) => (
+          {user.posts?.map(({ id, url }) => (
             <Link key={id} href={`/p/${id}`}>
               <div className="relative overflow-hidden pb-[100%]">
                 <Image
