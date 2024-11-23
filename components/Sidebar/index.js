@@ -2,28 +2,7 @@ import Image from "next/image";
 import Suggestion from "../Suggestion";
 import Footer from "../Footer";
 
-const suggestions = [
-  {
-    id: 1,
-    profileName: "audi",
-    picUrl: "/audi.jpeg",
-  },
-  {
-    id: 2,
-    profileName: "audi",
-    picUrl: "/audi.jpeg",
-  },
-  {
-    id: 3,
-    profileName: "audi",
-    picUrl: "/audi.jpeg",
-  },
-  {
-    id: 4,
-    profileName: "audi",
-    picUrl: "/audi.jpeg",
-  },
-];
+const suggestions = [];
 
 export default function Sidebar({ url, username, fullName }) {
   return (

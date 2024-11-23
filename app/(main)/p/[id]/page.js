@@ -51,7 +51,7 @@ async function getPost(id) {
       },
       usersWhoHaveLiked: {
         where: {
-          username: "cnbcmakeit",
+          username: "",
         },
         select: {
           id: true,

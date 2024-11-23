@@ -5,7 +5,7 @@ import Link from "next/link";
 async function getUser() {
   const user = await prisma.user.findUnique({
     where: {
-      username: "cnbcmakeit",
+      username: "",
     },
     select: {
       username: true,
@@ -15,7 +15,7 @@ async function getUser() {
           members: {
             where: {
               username: {
-                not: "cnbcmakeit",
+                not: "",
               },
             },
           },
