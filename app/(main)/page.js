@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 async function getUser() {
   let user = await prisma.user.findUnique({
     where: {
-      username: "",
+      username: "alexmorg123",
     },
     select: {
       url: true,
@@ -50,7 +50,7 @@ async function getUser() {
               },
               usersWhoHaveLiked: {
                 where: {
-                  username: "",
+                  username: "alexmorg123",
                 },
                 select: {
                   id: true,

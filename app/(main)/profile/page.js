@@ -5,7 +5,7 @@ import Link from "next/link";
 async function getUser() {
   const user = await prisma.user.findUnique({
     where: {
-      username: "",
+      username: "alexmorg123",
     },
     include: {
       _count: {
