@@ -1,30 +1,28 @@
-import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";
 
 async function getUser() {
-  const user = await prisma.user.findUnique({
-    where: {
-      username: "",
-    },
-    select: {
-      username: true,
-      chats: {
-        select: {
-          id: true,
-          members: {
-            where: {
-              username: {
-                not: "",
-              },
-            },
-          },
-        },
-      },
-    },
-  });
-
-  return user;
+  // const user = await prisma.user.findUnique({
+  //   where: {
+  //     username: "",
+  //   },
+  //   select: {
+  //     username: true,
+  //     chats: {
+  //       select: {
+  //         id: true,
+  //         members: {
+  //           where: {
+  //             username: {
+  //               not: "",
+  //             },
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  // });
+  // return user;
 }
 
 export default async function Inbox() {

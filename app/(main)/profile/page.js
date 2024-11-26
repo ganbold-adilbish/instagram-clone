@@ -1,49 +1,47 @@
-import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";
 
 async function getUser() {
-  const user = await prisma.user.findUnique({
-    where: {
-      username: "alexmorg123",
-    },
-    include: {
-      _count: {
-        select: {
-          posts: true,
-          followers: true,
-          followingUsers: true,
-        },
-      },
-      stories: {
-        where: {
-          published: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-        select: {
-          id: true,
-          url: true,
-          name: true,
-        },
-      },
-      posts: {
-        where: {
-          published: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-        select: {
-          id: true,
-          url: true,
-        },
-      },
-    },
-  });
-
-  return user;
+  // const user = await prisma.user.findUnique({
+  //   where: {
+  //     username: "alexmorg123",
+  //   },
+  //   include: {
+  //     _count: {
+  //       select: {
+  //         posts: true,
+  //         followers: true,
+  //         followingUsers: true,
+  //       },
+  //     },
+  //     stories: {
+  //       where: {
+  //         published: true,
+  //       },
+  //       orderBy: {
+  //         createdAt: "desc",
+  //       },
+  //       select: {
+  //         id: true,
+  //         url: true,
+  //         name: true,
+  //       },
+  //     },
+  //     posts: {
+  //       where: {
+  //         published: true,
+  //       },
+  //       orderBy: {
+  //         createdAt: "desc",
+  //       },
+  //       select: {
+  //         id: true,
+  //         url: true,
+  //       },
+  //     },
+  //   },
+  // });
+  // return user;
 }
 
 export default async function Profile() {
