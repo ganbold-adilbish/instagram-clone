@@ -4,7 +4,7 @@ import Image from "next/image";
 const actionButtons = [
   {
     id: 1,
-    name: "like",
+    name: "like-solid",
   },
   {
     id: 2,
@@ -21,51 +21,22 @@ const saveButton = {
 };
 
 async function getPosts() {
-  const posts = await prisma.post.findMany({
-    where: {
-      published: true,
+  const data = await fetch(`${process.env.UNSPLASH_API_URL}`, {
+    headers: {
+      Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
     },
   });
-
+  const posts = await data.json();
   return posts;
 }
 
 async function getPost(id) {
-  let post = await prisma.post.findUnique({
-    where: {
-      id,
-    },
-    select: {
-      _count: {
-        select: {
-          usersWhoHaveLiked: true,
-        },
-      },
-      url: true,
-      description: true,
-      author: {
-        select: {
-          url: true,
-          username: true,
-        },
-      },
-      usersWhoHaveLiked: {
-        where: {
-          username: "",
-        },
-        select: {
-          id: true,
-        },
-      },
+  const data = await fetch(`${process.env.UNSPLASH_API_URL}/${id}`, {
+    headers: {
+      Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
     },
   });
-
-  post = {
-    ...post,
-    likes_total_count: post._count.usersWhoHaveLiked,
-    has_liked: post.usersWhoHaveLiked.length === 1,
-  };
-
+  const post = await data.json();
   return post;
 }
 
@@ -78,8 +49,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Post({ params: { id } }) {
-  const { url, author, description, likes_total_count, has_liked } =
-    await getPost(id);
+  const { urls, user, alt_description, likes } = await getPost(id);
 
   return (
     <div className="px-5 pt-14">
@@ -88,7 +58,7 @@ export default async function Post({ params: { id } }) {
           <div className="relative overflow-hidden pb-[100%]">
             <Image
               priority
-              src={url}
+              src={urls.regular}
               fill
               alt={"no picture"}
               className="object-cover"
@@ -101,14 +71,14 @@ export default async function Post({ params: { id } }) {
             <div className="w-8 h-8 rounded-full overflow-hidden">
               <Image
                 priority
-                src={author.url}
+                src={user.profile_image.large}
                 height={32}
                 width={32}
-                alt={author.username}
+                alt={user.instagram_username}
               />
             </div>
             <div>
-              <strong className="text-sm">{author.username}</strong>
+              <strong className="text-sm">{user.instagram_username}</strong>
               <span className="mx-1">•</span>
               <strong className="text-sm">Following</strong>
             </div>
@@ -117,19 +87,19 @@ export default async function Post({ params: { id } }) {
           <div className="p-4 h-full border-b border-gray-200 flex items-start space-x-2 overflow-y-auto">
             <Image
               priority
-              src={author.url}
+              src={user.profile_image.large}
               height={32}
               width={32}
-              alt={author.username}
+              alt={user.instagram_username}
               className="rounded-full"
             />
             <div className="flex flex-col">
               <div className="flex items-stretch text-sm leading-[18px]">
-                <strong>{author.username}</strong>
+                <strong>{user.instagram_username}</strong>
                 <span className="mx-1">•</span>
                 <time dateTime="2024-05-13T05:36:40.000Z">1d</time>
               </div>
-              <span className="text-sm">{description}</span>
+              <span className="text-sm">{alt_description}</span>
             </div>
           </div>
 
@@ -139,9 +109,7 @@ export default async function Post({ params: { id } }) {
                 {actionButtons.map(({ id, name }) => (
                   <button key={id} className="p-2">
                     <Image
-                      src={`/post/${name}${
-                        has_liked && name === "like" ? "-solid" : ""
-                      }.svg`}
+                      src={`/post/${name}.svg`}
                       height={24}
                       width={24}
                       alt={name}
@@ -158,7 +126,7 @@ export default async function Post({ params: { id } }) {
                 />
               </button>
             </div>
-            <strong className="text-sm">{likes_total_count} likes</strong>
+            <strong className="text-sm">{likes} likes</strong>
             <div>
               <time className="text-xs" dateTime="2024-05-14T12:32:52.000Z">
                 36 minutes ago
