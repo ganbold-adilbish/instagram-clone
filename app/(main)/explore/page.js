@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 async function getPosts() {
-  const data = await fetch(`${process.env.UNSPLASH_API_URL}`, {
+  const data = await fetch(`${process.env.UNSPLASH_API_URL}/photos`, {
     headers: {
       Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
     },

@@ -21,7 +21,7 @@ const saveButton = {
 };
 
 async function getPosts() {
-  const data = await fetch(`${process.env.UNSPLASH_API_URL}`, {
+  const data = await fetch(`${process.env.UNSPLASH_API_URL}/photos`, {
     headers: {
       Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
     },
@@ -31,7 +31,7 @@ async function getPosts() {
 }
 
 async function getPost(id) {
-  const data = await fetch(`${process.env.UNSPLASH_API_URL}/${id}`, {
+  const data = await fetch(`${process.env.UNSPLASH_API_URL}/photos/${id}`, {
     headers: {
       Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
     },
