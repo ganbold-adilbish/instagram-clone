@@ -13,7 +13,12 @@ export const metadata = {
      modern web development technologies, emphasizing scalability, \
      responsive design, and an engaging user interface. This project \
      highlights the ability to design, develop, and optimize a complex application \
-     with attention to detail and performance.",
+     with attention to detail and performance. \
+     P.S. This project was a labor of love and \
+     a testament to my dedication to mastering web development. \
+     Every feature was carefully crafted to mirror Instagram's functionality \
+     while learning best practices in design and coding. \
+     Just for demonstration, not for production.",
 };
 
 export default function RootLayout({ children }) {
