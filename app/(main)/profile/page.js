@@ -2,46 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 
 async function getUser() {
-  // const user = await prisma.user.findUnique({
-  //   where: {
-  //     username: "alexmorg123",
-  //   },
-  //   include: {
-  //     _count: {
-  //       select: {
-  //         posts: true,
-  //         followers: true,
-  //         followingUsers: true,
-  //       },
-  //     },
-  //     stories: {
-  //       where: {
-  //         published: true,
-  //       },
-  //       orderBy: {
-  //         createdAt: "desc",
-  //       },
-  //       select: {
-  //         id: true,
-  //         url: true,
-  //         name: true,
-  //       },
-  //     },
-  //     posts: {
-  //       where: {
-  //         published: true,
-  //       },
-  //       orderBy: {
-  //         createdAt: "desc",
-  //       },
-  //       select: {
-  //         id: true,
-  //         url: true,
-  //       },
-  //     },
-  //   },
-  // });
-  // return user;
+  const data = await fetch(
+    `${process.env.UNSPLASH_API_URL}/users/${process.env.USERNAME}`,
+    {
+      headers: {
+        Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
+      },
+    }
+  );
+  const user = await data.json();
+  return user;
 }
 
 export default async function Profile() {
@@ -54,7 +24,7 @@ export default async function Profile() {
           <div className="h-[150px] w-[150px] self-center	">
             <Image
               priority
-              src={user.url}
+              src={user.profile_image.large}
               height={150}
               width={150}
               alt={"no picture"}
@@ -80,21 +50,21 @@ export default async function Profile() {
           </div>
           <div className="flex space-x-4 items-center mb-4">
             <div>
-              <strong>{user._count.posts}</strong> posts
+              <strong>{user.total_photos}</strong> posts
             </div>
             <div>
-              <strong>{user._count.followers}</strong> followers
+              <strong>{user.followers_count}</strong> followers
             </div>
             <div>
-              <strong>{user._count.followingUsers}</strong> following
+              <strong>{user.following_count}</strong> following
             </div>
           </div>
-          <strong>{user.fullName}</strong>
+          <strong>{`${user.first_name} ${user.last_name}`}</strong>
           <div>{user.description}</div>
         </div>
       </header>
 
-      <div>
+      {/* <div>
         <ul className="flex space-x-4 overflow-y-auto">
           {user.stories?.map(({ id, name, url }) => (
             <li
@@ -108,18 +78,18 @@ export default async function Profile() {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
 
       <div className="border w-full border-gray-200 my-[52px]"></div>
 
       <div>
         <div className="grid grid-cols-3 gap-1">
-          {user.posts?.map(({ id, url }) => (
+          {user.photos?.map(({ id, urls }) => (
             <Link key={id} href={`/p/${id}`}>
               <div className="relative overflow-hidden pb-[100%]">
                 <Image
                   priority
-                  src={url}
+                  src={urls.regular}
                   fill
                   alt="no picture"
                   className="object-cover"
