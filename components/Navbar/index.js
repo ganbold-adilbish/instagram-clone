@@ -21,12 +21,12 @@ const navbarItems = [
     name: "explore",
     path: "/explore",
   },
-  {
-    id: 4,
-    title: "Reels",
-    name: "reels",
-    path: "/reels",
-  },
+  // {
+  //   id: 4,
+  //   title: "Reels",
+  //   name: "reels",
+  //   path: "/reels",
+  // },
   {
     id: 5,
     title: "Messages",
@@ -38,12 +38,12 @@ const navbarItems = [
     title: "Notifications",
     name: "notifications",
   },
-  {
-    id: 7,
-    title: "Create",
-    name: "create",
-    path: "/create",
-  },
+  // {
+  //   id: 7,
+  //   title: "Create",
+  //   name: "create",
+  //   path: "/create",
+  // },
   {
     id: 8,
     title: "Profile",
