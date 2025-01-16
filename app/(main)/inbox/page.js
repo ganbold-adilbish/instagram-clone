@@ -2,27 +2,33 @@ import Image from "next/image";
 import Link from "next/link";
 
 async function getUser() {
-  // const user = await prisma.user.findUnique({
-  //   where: {
-  //     username: "",
-  //   },
-  //   select: {
-  //     username: true,
-  //     chats: {
-  //       select: {
-  //         id: true,
-  //         members: {
-  //           where: {
-  //             username: {
-  //               not: "",
-  //             },
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  // });
-  // return user;
+  const data = await fetch(
+    `${process.env.UNSPLASH_API_URL}/users/${process.env.USERNAME}`,
+    {
+      headers: {
+        Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
+      },
+    }
+  );
+  let user = await data.json();
+
+  user = {
+    ...user,
+    chats: [
+      {
+        id: 1,
+        members: [
+          {
+            url: user.photos[0].urls.regular,
+            username: "johndoe",
+            lastActive: "3m",
+          },
+        ],
+        messages: [],
+      },
+    ],
+  };
+  return user;
 }
 
 export default async function Inbox() {
