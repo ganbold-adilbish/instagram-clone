@@ -19,18 +19,12 @@ const saveButton = {
   name: "save",
 };
 
-export default function Post({
-  url,
-  description,
-  likes_total_count,
-  name,
-  has_liked,
-}) {
+export default function Post({ urls, description, liked_by_user, user }) {
   return (
     <div className="p-4 md:p-0 my-20 w-[468px] text-sm">
       <Image
         priority
-        src={url}
+        src={urls.regular}
         height={0}
         width={0}
         alt={"no picture"}
@@ -43,7 +37,7 @@ export default function Post({
             <button key={id}>
               <Image
                 src={`/post/${name}${
-                  has_liked && name === "like" ? "-solid" : ""
+                  liked_by_user && name === "like" ? "-solid" : ""
                 }.svg`}
                 height={24}
                 width={24}
@@ -61,9 +55,9 @@ export default function Post({
           />
         </button>
       </div>
-      <h1 className="font-bold">{likes_total_count} likes</h1>
+      <h1 className="font-bold">{user.total_likes} likes</h1>
       <p className="mt-2">
-        <span className="font-bold">{name}</span> {description}
+        <span className="font-bold">{user.name}</span> {description}
       </p>
     </div>
   );
