@@ -1,12 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 
-async function getPosts() {
-  const data = await fetch(`${process.env.UNSPLASH_API_URL}/photos`, {
-    headers: {
-      Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
-    },
-  });
+async function getRandomPosts() {
+  const randomPageNumber = Math.ceil(Math.random() * 100);
+  const data = await fetch(
+    `${process.env.UNSPLASH_API_URL}/photos?page=${randomPageNumber}&per_page=30`,
+    {
+      headers: {
+        Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
+      },
+    }
+  );
   const posts = await data.json();
   return posts;
 }
@@ -14,7 +18,7 @@ async function getPosts() {
 export const dynamic = "force-dynamic";
 
 export default async function Explore() {
-  const posts = await getPosts();
+  const posts = await getRandomPosts();
 
   return (
     <div className="px-3 my-10 grid grid-cols-3 gap-1  mx-auto w-full max-w-[992px]">
