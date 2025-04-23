@@ -60,7 +60,7 @@ export default async function Post({ params }) {
               priority
               src={urls.regular}
               fill
-              alt={"no picture"}
+              alt={alt_description}
               className="object-cover"
               sizes="80vw"
             />
@@ -74,11 +74,11 @@ export default async function Post({ params }) {
                 src={user.profile_image.large}
                 height={32}
                 width={32}
-                alt={user.instagram_username}
+                alt={user.username}
               />
             </div>
             <div>
-              <strong className="text-sm">{user.instagram_username}</strong>
+              <strong className="text-sm">{user.username}</strong>
               <span className="mx-1">•</span>
               <strong className="text-sm">Following</strong>
             </div>
@@ -90,12 +90,12 @@ export default async function Post({ params }) {
               src={user.profile_image.large}
               height={32}
               width={32}
-              alt={user.instagram_username}
+              alt={user.username}
               className="rounded-full"
             />
             <div className="flex flex-col">
               <div className="flex items-stretch text-sm leading-[18px]">
-                <strong>{user.instagram_username}</strong>
+                <strong>{user.username}</strong>
                 <span className="mx-1">•</span>
                 <time dateTime="2024-05-13T05:36:40.000Z">1d</time>
               </div>
