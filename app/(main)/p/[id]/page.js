@@ -47,7 +47,8 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function Post({ params: { id } }) {
+export default async function Post({ params }) {
+  const { id } = await params;
   const { urls, user, alt_description, likes } = await getPost(id);
 
   return (
