@@ -52,10 +52,10 @@ export default async function Post({ params }) {
   const { urls, user, alt_description, likes } = await getPost(id);
 
   return (
-    <div className="px-5 pt-14">
-      <div className="flex border border-gray-200 mx-auto w-full max-w-[937px]">
-        <div className="w-full">
-          <div className="relative overflow-hidden pb-[100%]">
+    <div className="md:px-5 pt-14">
+      <div className="flex border-b md:border border-gray-200 mx-auto w-full max-w-[937px]">
+        <div className="hidden md:block w-full">
+          <div className="relative overflow-hidden pb-[100%] ">
             <Image
               priority
               src={urls.regular}
@@ -66,7 +66,7 @@ export default async function Post({ params }) {
             />
           </div>
         </div>
-        <div className="flex flex-col w-[355px] flex-none">
+        <div className="flex flex-col flex-none w-full md:w-[355px] ">
           <div className="px-4 py-2 border-b border-gray-200 flex items-center space-x-2">
             <div className="w-8 h-8 rounded-full overflow-hidden">
               <Image
@@ -84,7 +84,20 @@ export default async function Post({ params }) {
             </div>
           </div>
 
-          <div className="p-4 h-full border-b border-gray-200 flex items-start space-x-2 overflow-y-auto">
+          <div className="block md:hidden">
+            <div className="relative overflow-hidden pb-[100%] ">
+              <Image
+                priority
+                src={urls.regular}
+                fill
+                alt={alt_description}
+                className="object-cover"
+                sizes="80vw"
+              />
+            </div>
+          </div>
+
+          <div className="p-4 h-full border-b border-gray-200 hidden md:flex items-start space-x-2 overflow-y-auto">
             <Image
               priority
               src={user.profile_image.large}
