@@ -15,8 +15,6 @@ async function getRandomPosts() {
   return posts;
 }
 
-export const dynamic = "force-dynamic";
-
 export default async function Explore() {
   const posts = await getRandomPosts();
 
