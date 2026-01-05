@@ -66,7 +66,7 @@ export default async function Post({ params }) {
             />
           </div>
         </div>
-        <div className="flex flex-col flex-none w-full md:w-[355px] ">
+        <div className="flex flex-col flex-none w-full md:w-[355px]">
           <div className="px-4 py-2 border-b border-gray-200 flex items-center space-x-2">
             <div className="w-8 h-8 rounded-full overflow-hidden">
               <Image
@@ -139,6 +139,14 @@ export default async function Post({ params }) {
                 />
               </button>
             </div>
+
+            <div className="py-1 flex md:hidden items-start space-x-2 overflow-y-auto">
+              <div className="flex items-stretch text-sm leading-[18px]">
+                <strong>{user.username}</strong>
+              </div>
+              <span className="text-sm">{alt_description}</span>
+            </div>
+
             <strong className="text-sm">{likes} likes</strong>
             <div>
               <time className="text-xs" dateTime="2024-05-14T12:32:52.000Z">
