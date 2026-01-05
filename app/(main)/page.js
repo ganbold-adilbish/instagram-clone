@@ -22,6 +22,7 @@ async function getPosts() {
       headers: {
         Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
       },
+      next: { revalidate: 3600 },
     }
   );
   const posts = await data.json();
