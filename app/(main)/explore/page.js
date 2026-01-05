@@ -2,17 +2,22 @@ import Image from "next/image";
 import Link from "next/link";
 
 async function getRandomPosts() {
-  const randomPageNumber = Math.ceil(Math.random() * 100);
-  const data = await fetch(
-    `${process.env.UNSPLASH_API_URL}/photos?page=${randomPageNumber}&per_page=30`,
-    {
-      headers: {
-        Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
-      },
-    }
-  );
-  const posts = await data.json();
-  return posts;
+  try {
+    const randomPageNumber = Math.ceil(Math.random() * 100);
+    const data = await fetch(
+      `${process.env.UNSPLASH_API_URL}/photos?page=${randomPageNumber}&per_page=30`,
+      {
+        headers: {
+          Authorization: `Client-ID ${process.env.ACCESS_KEY}`,
+        },
+      }
+    );
+    const posts = await data.json();
+    return posts;
+  } catch (error) {
+    console.error("Fetch failed:", error.message);
+    return null;
+  }
 }
 
 export default async function Explore() {
@@ -20,7 +25,7 @@ export default async function Explore() {
 
   return (
     <div className="px-3 my-10 grid grid-cols-3 gap-1  mx-auto w-full max-w-[992px]">
-      {posts.map(({ id, urls }) => (
+      {posts?.map(({ id, urls }) => (
         <Link key={id} href={`/p/${id}`}>
           <div className="relative overflow-hidden pb-[100%]">
             <Image
